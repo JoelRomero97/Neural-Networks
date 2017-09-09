@@ -2,7 +2,7 @@
 clc
 
 %Guardamos en n el valor introducido por el usuario
-n = input ('Introduce el numero de elementos de la serie Fibonacci: ');
+n = input ('Introduce el numero de elementos que deseas ver de la serie Fibonacci: ');
 
 %Declaramos 2 arreglos de ceros
 aux1 = zeros (1, n); aux2 = zeros (1, n);
