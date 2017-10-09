@@ -4,7 +4,7 @@ clc
 
 %Pedimos los valores dados por el usuario para realizar el aprendizaje de
 %una RNA Adaline de un codificador de binario a decimal de 3 bits sin bias
-iteracion_maxima = input ('Ingresa el numero máximo de iteraciones: ');
+it_max = input ('Ingresa el numero máximo de iteraciones: ');
 e_it = input ('Ingresa el valor al que deseas llegar la señal del error: ');
 alpha = input ('Ingresa el valor de alfa: ');
 
@@ -26,15 +26,15 @@ for i = 1:8
     p = str2num (p);
     
     %Realizamos la multiplicacion de las matrices
-    a = W * p;
+    a = purelin (W * p);
     
     %Obtenemos el error para este dato
-    %errores (i) = (k - a);
+    errores (i) = (k - a);
     
     %Actualizamos el valor de la matriz de pesos
     W = W + ((2 * alpha * errores (i)) * p');
     
-    sprintf ('Para el dato %d, el valor de a es: %d\n', i, a)
+    sprintf ('Para el dato %d, el valor de a es: %.4f\n', i, a)
     k = k + 1;
 end
 
