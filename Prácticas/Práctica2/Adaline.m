@@ -9,15 +9,21 @@ e_it = input ('Ingresa el valor al que deseas llegar la señal del error: ');
 alpha = input ('Ingresa el valor de alfa: ');
 
 %Asignamos valores aleatorios a la matriz de pesos W con la función rand
-%W = rand (1, 3);
-W = [0.84 0.39 0.78];
+W = rand (1, 3);
+%W = [0.84 0.39 0.78];
 errores = zeros (1,8);
+figure('Name','Red Adaline','NumberTitle','off');
 
 for j = 1:it_max
     %k será un 0 cada iteración para convertir a binario
     k = zeros (1, 1);
     %Comenzamos a realizar la propagación hacia adelante de todos los datos
     for i = 1:8
+        hold on;
+        subplot (2,5,j),plot (W, 'r*-');
+        grid, ylabel('W [i]'), xlabel('i');
+        title (['\fontsize{16} \color[rgb]{0 .5 .5}Iteracion ' int2str(j)]);
+        
         %Convertimos a k a un número binario de 3 bits
         p = dec2bin (k, 3);
 
@@ -25,7 +31,7 @@ for j = 1:it_max
         p = p';
 
         %Conertimos los elementos a numero para realizar la multiplicación
-        p = str2num (p)
+        p = str2num (p);
 
         %Realizamos la multiplicacion de las matrices
         a = purelin (W * p);
@@ -36,7 +42,6 @@ for j = 1:it_max
         %Actualizamos el valor de la matriz de pesos
         W = W + ((2 * alpha * errores (i)) * p');
 
-        %sprintf ('Para el dato %d, el valor de a es: %.4f\n', i, a)
         k = k + 1;
     end
     %Verificamos las condiciones de paro para el aprendizaje sumando los
