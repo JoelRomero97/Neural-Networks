@@ -64,3 +64,5 @@ for j = 1:it_max
     %Reseteamos el valor del error global a 0
     Error_Global = 0;
 end
+
+clearvars
