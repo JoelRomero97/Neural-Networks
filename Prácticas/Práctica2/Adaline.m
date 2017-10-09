@@ -12,36 +12,50 @@ alpha = input ('Ingresa el valor de alfa: ');
 %W = rand (1, 3);
 W = [0.84 0.39 0.78];
 errores = zeros (1,8);
-k = zeros (1, 1);
 
-%Comenzamos a realizar la propagación hacia adelante de todos los datos
-for i = 1:8
-    %Convertimos a k a un número binario de 3 bits
-    p = dec2bin (k, 3);
+for j = 1:it_max
+    %k será un 0 cada iteración para convertir a binario
+    k = zeros (1, 1);
+    %Comenzamos a realizar la propagación hacia adelante de todos los datos
+    for i = 1:8
+        %Convertimos a k a un número binario de 3 bits
+        p = dec2bin (k, 3);
+
+        %Transponemos el vector, para que sea un vector columna
+        p = p';
+
+        %Conertimos los elementos a numero para realizar la multiplicación
+        p = str2num (p)
+
+        %Realizamos la multiplicacion de las matrices
+        a = purelin (W * p);
+
+        %Obtenemos el error para este dato
+        errores (i) = (k - a);
+
+        %Actualizamos el valor de la matriz de pesos
+        W = W + ((2 * alpha * errores (i)) * p');
+
+        %sprintf ('Para el dato %d, el valor de a es: %.4f\n', i, a)
+        k = k + 1;
+    end
+    %Verificamos las condiciones de paro para el aprendizaje sumando los
+    %valores del vector de los errores individuales con sum y dividiendo
+    %entre el numero de datos que en este caso es 8
+    Error_Global = (1 / 8) * (sum (errores));
     
-    %Transponemos el vector, para que sea un vector columna
-    p = p';
+    %Si el error global es 0, el aprendizaje obtenido es el ideal
+    if Error_Global == 0
+        sprintf ('Se cumplió un aprendizaje ideal en la iteración %d', j)
+        break;
     
-    %Conertimos los elementos a numero para realizar la multiplicación
-    p = str2num (p);
+    %Si el error global es menor al error introducido por el usuario, el 
+    %aprendizaje obtenido es 2/3 de exitoso
+    elseif Error_Global < e_it
+        sprintf ('Se obtuvo un aprendizaje aceptable en la iteración %d', j)
+        break;
+    end
     
-    %Realizamos la multiplicacion de las matrices
-    a = purelin (W * p);
-    
-    %Obtenemos el error para este dato
-    errores (i) = (k - a);
-    
-    %Actualizamos el valor de la matriz de pesos
-    W = W + ((2 * alpha * errores (i)) * p');
-    
-    sprintf ('Para el dato %d, el valor de a es: %.4f\n', i, a)
-    k = k + 1;
+    %Reseteamos el valor del error global a 0
+    Error_Global = 0;
 end
-
-
-
-
-
-
-
-
