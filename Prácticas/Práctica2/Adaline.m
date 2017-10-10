@@ -12,16 +12,25 @@ alpha = input ('Ingresa el valor de alfa: ');
 W = rand (1, 3);
 %W = [0.84 0.39 0.78];
 errores = zeros (1,8);
-figure('Name','Red Adaline','NumberTitle','off');
-
+Pesos = figure('Name','Red Adaline - Matriz de Pesos','NumberTitle','off');
+Error = figure('Name','Red Adaline - Señal del error','NumberTitle','off');
 for j = 1:it_max
     %k será un 0 cada iteración para convertir a binario
     k = zeros (1, 1);
     %Comenzamos a realizar la propagación hacia adelante de todos los datos
     for i = 1:8
+        %Pintamos en el figure de la matriz de pesos
+        figure (Pesos);
         hold on;
-        subplot (2,5,j),plot (W, 'r*-');
+        subplot (2, ceil(it_max / 2), j),plot (W, '*-');
         grid, ylabel('W [i]'), xlabel('i');
+        title (['\fontsize{16} \color[rgb]{0 .5 .5}Iteracion ' int2str(j)]);
+        
+        %Pintamos en el figure de la señal del error
+        figure (Error);
+        hold on;
+        subplot (2, ceil(it_max / 2), j),plot (errores, 'o-');
+        grid, ylabel('Error [i]'), xlabel('k');
         title (['\fontsize{16} \color[rgb]{0 .5 .5}Iteracion ' int2str(j)]);
         
         %Convertimos a k a un número binario de 3 bits
@@ -64,5 +73,3 @@ for j = 1:it_max
     %Reseteamos el valor del error global a 0
     Error_Global = 0;
 end
-
-clearvars
