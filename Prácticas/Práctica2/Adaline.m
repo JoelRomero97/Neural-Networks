@@ -10,17 +10,26 @@ alpha = input ('Ingresa el valor de alfa: ');
 
 %Asignamos valores aleatorios a la matriz de pesos W con la función rand
 W = rand (1, 3);
+W1 = zeros (1, 9);
+W2 = zeros (1, 9);
+W3 = zeros (1, 9);
 %W = [0.84 0.39 0.78];
 errores = zeros (1,8);
 Pesos = figure('Name','Red Adaline - Matriz de Pesos','NumberTitle','off');
+Pesos2 = figure('Name','Red Adaline - Matriz de Pesos 2','NumberTitle','off');
 Error = figure('Name','Red Adaline - Señal del error','NumberTitle','off');
+rango = 0:8;
+W1 (1) = W (1);
+W2 (1) = W (2);
+W3 (1) = W (3);
 for j = 1:it_max
     %k será un 0 cada iteración para convertir a binario
     k = zeros (1, 1);
     %Comenzamos a realizar la propagación hacia adelante de todos los datos
     for i = 1:8
+        
         %Pintamos en el figure de la matriz de pesos
-        figure (Pesos);
+        figure (Pesos2);
         hold on;
         subplot (2, ceil(it_max / 2), j),plot (W, '*-');
         grid, ylabel('W [i]'), xlabel('i');
@@ -52,7 +61,20 @@ for j = 1:it_max
         W = W + ((2 * alpha * errores (i)) * p');
 
         k = k + 1;
+        
+        %Actutalizamos los valores de los pesos
+        W1 (i + 1) = W (1);
+        W2 (i + 1) = W (2);
+        W3 (i + 1) = W (3);
     end
+    
+    %Pintamos en el figure de la matriz de pesos
+    figure (Pesos);
+    hold on;
+    subplot (2, ceil(it_max / 2), j),plot (rango, W1, rango, W2, rango, W3, '*-');
+    grid, ylabel('W'), xlabel('dato n');
+    title (['\fontsize{16} \color[rgb]{0 .5 .5}Iteracion ' int2str(j)]);
+    
     %Verificamos las condiciones de paro para el aprendizaje sumando los
     %valores del vector de los errores individuales con sum y dividiendo
     %entre el numero de datos que en este caso es 8
