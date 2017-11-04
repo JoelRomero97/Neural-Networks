@@ -32,10 +32,36 @@ archivo_matriz = fopen (archivo, 'r');
 p = fscanf (archivo_matriz, '%f');
 
 %COMIENZA LA CAPA FEEDFORWARD (1 vez)
-a = purelin((W * p) + bias)
+a = purelin((W * p) + bias);
 
+%Calculamos un valor para epsilon aleatorio
+%epsilon = (rand() * (1/(num_filas - 1)) * -1)
+epsilon = (0.5 * -1);
 
+%Calculamos la matriz de pesos a usar en la capa Recurrente
+W = zeros (num_filas);
+W = W + epsilon;
+for i = 1:num_filas
+    for j = 1:num_filas
+        if i == j
+            W (i, j) = 1;
+        end
+    end
+end
 
+%COMIENZA LA CAPA RECURRENTE (n veces)
+i = 1;
+flag = 1;
+while flag == 1
+    p = a;
+    a = poslin (W * p)
+    if i == 2
+        flag = 0;
+    end
+    i = i + 1;
+end
+
+fprintf ('La red Hamming convergió en la iteración %d\n', i - 1);
 
 
 %ESCRIBIR LA MATRIZ EN UN ARCHIVO DE TEXTO LLAMADO NEW
