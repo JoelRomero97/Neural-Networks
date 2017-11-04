@@ -52,6 +52,9 @@ end
 %COMIENZA LA CAPA RECURRENTE (n veces)
 flag = ones (num_filas, 1);iteracion = 1;
 
+%ESCRIBIR LA MATRIZ EN UN ARCHIVO DE TEXTO LLAMADO SalidaHamming
+nuevo = fopen ('SalidaHamming.txt', 'w');
+
 while flag ~= zeros (num_filas, 1)
     p = a;
     a = poslin (W * p);
@@ -64,6 +67,10 @@ while flag ~= zeros (num_filas, 1)
         %Restamos los 2 vectores columna y lo guardamos en la bandera
         flag = aux (:,iteracion) - aux (:, iteracion - 1);
     end
+    %Escribimos los datos en un archivo
+    for i = 1:num_filas
+          fprintf (nuevo, '%f\n', a(i, 1));
+    end
     iteracion = iteracion + 1;
 end
 
@@ -73,28 +80,7 @@ for i = 1:num_filas
         break;
     end
 end
-fprintf ('La red Hamming convergió en la iteración %d a la clase numero %d\n', iteracion - 1, i);
-
-
-%ESCRIBIR LA MATRIZ EN UN ARCHIVO DE TEXTO LLAMADO NEW
-
-%Calculamos el tamaño de la matriz W
-[f, c] = size (W);
-nuevo = fopen ('new.txt', 'w');
-
-%Escribimos los datos en un archivo
-for i = 1:f
-    for j = 1:c
-        fprintf (nuevo,'%f\t', W(i, j));
-    end
-      fprintf(nuevo, '\n');
-end
-
-
-
-
-
-
+fprintf ('La RNA convergió en la iteración %d a la clase numero %d\n', iteracion - 1, i);
 
 %Cerramos los archivos
 fclose (archivo_matriz);
