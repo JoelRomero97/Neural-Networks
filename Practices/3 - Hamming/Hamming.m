@@ -50,18 +50,30 @@ for i = 1:num_filas
 end
 
 %COMIENZA LA CAPA RECURRENTE (n veces)
-i = 1;
-flag = 1;
-while flag == 1
+flag = ones (num_filas, 1);iteracion = 1;
+
+while flag ~= zeros (num_filas, 1)
     p = a;
-    a = poslin (W * p)
-    if i == 2
-        flag = 0;
+    a = poslin (W * p);
+    if iteracion == 1
+        aux = a;
+    else
+        %Agregamos un vector columna a la matriz aux
+        aux = [aux, a];
+        
+        %Restamos los 2 vectores columna y lo guardamos en la bandera
+        flag = aux (:,iteracion) - aux (:, iteracion - 1);
     end
-    i = i + 1;
+    iteracion = iteracion + 1;
 end
 
-fprintf ('La red Hamming convergió en la iteración %d\n', i - 1);
+for i = 1:num_filas
+    clase = a (i, 1);
+    if clase ~= 0
+        break;
+    end
+end
+fprintf ('La red Hamming convergió en la iteración %d a la clase numero %d\n', iteracion - 1, i);
 
 
 %ESCRIBIR LA MATRIZ EN UN ARCHIVO DE TEXTO LLAMADO NEW
