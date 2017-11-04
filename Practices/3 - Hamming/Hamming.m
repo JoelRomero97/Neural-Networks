@@ -35,8 +35,8 @@ p = fscanf (archivo_matriz, '%f');
 a = purelin((W * p) + bias);
 
 %Calculamos un valor para epsilon aleatorio
-%epsilon = (rand() * (1/(num_filas - 1)) * -1)
-epsilon = (0.5 * -1);
+epsilon = (rand() * (1/(num_filas - 1)) * -1);
+fprintf ('\n\nValor de epsilon: %d\n\n', epsilon);
 
 %Calculamos la matriz de pesos a usar en la capa Recurrente
 W = zeros (num_filas);
@@ -81,6 +81,17 @@ for i = 1:num_filas
     end
 end
 fprintf ('La RNA convergió en la iteración %d a la clase numero %d\n', iteracion - 1, i);
+
+%GRAFICAMOS LOS VALORES DE SALIDA DE LA RED
+nuevo = fopen ('SalidaHamming.txt', 'r');
+Graph = figure('Name','Red Hamming','NumberTitle','off');
+while ~feof (nuevo)
+    [r, cont] = fscanf (nuevo, '%f', [num_filas 1]);
+    figure (Graph);
+    hold on;
+    plot (r, 'o-');
+    grid, ylabel('Rasgo'), xlabel('Clase');
+end
 
 %Cerramos los archivos
 fclose (archivo_matriz);
