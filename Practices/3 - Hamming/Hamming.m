@@ -17,7 +17,7 @@ bias = zeros (num_filas,1);
 bias = bias + num_col;
 
 while ~feof (archivo_matriz)
-    [W, cont] = fscanf (archivo_matriz, '%f', [num_col num_filas]);
+    [W, ~] = fscanf (archivo_matriz, '%f', [num_col num_filas]);
 end
 W = W';
 
@@ -100,12 +100,16 @@ fprintf ('\nLa RNA convergió en la iteración %d a la clase numero %d\n\n', itera
 %GRAFICAMOS LOS VALORES DE SALIDA DE LA RED
 nuevo = fopen ('SalidaHamming.txt', 'r');
 Graph = figure('Name','Red Hamming','NumberTitle','off');
+
 while ~feof (nuevo)
-    [r, cont] = fscanf (nuevo, '%f', [num_filas 1]);
+    [r, cont] = fscanf (nuevo, '%f\n', [num_filas iteracion]);
+end
+
+for i = 1:num_filas
     figure (Graph);
     hold on;
-    plot (r, 'o-');
-    grid, ylabel('Rasgo'), xlabel('Clase');
+    plot (r (i,:), 'o-');
+    grid, ylabel('Valor'), xlabel('Iteración');
 end
 
 %Cerramos los archivos
