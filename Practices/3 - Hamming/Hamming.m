@@ -59,8 +59,9 @@ nuevo = fopen ('SalidaHamming.txt', 'w');
 for i = 1:num_filas
       fprintf (nuevo, '%f\n', a(i, 1));
 end
-
-while flag ~= zeros (num_filas, 1)
+cont = 0;
+while cont ~= 1
+    cont = 0;
     p = a;
     a = poslin (W * p);
     if iteracion == 1
@@ -71,6 +72,14 @@ while flag ~= zeros (num_filas, 1)
         
         %Restamos los 2 vectores columna y lo guardamos en la bandera
         flag = aux (:,iteracion) - aux (:, iteracion - 1);
+        if flag == zeros (num_filas, 1)
+            for i = 1:num_filas
+                clase = a (i, 1);
+                if clase ~= 0
+                    cont = cont + 1;
+                end
+            end
+        end
     end
     %Escribimos los datos en un archivo
     for i = 1:num_filas
@@ -85,6 +94,7 @@ for i = 1:num_filas
         break;
     end
 end
+
 fprintf ('\nLa RNA convergió en la iteración %d a la clase numero %d\n\n', iteracion - 1, i);
 
 %GRAFICAMOS LOS VALORES DE SALIDA DE LA RED
