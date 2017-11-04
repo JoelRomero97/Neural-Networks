@@ -9,8 +9,8 @@ archivo = input ('Introduce el nombre del archivo que contiene a W: ', 's');
 archivo_matriz = fopen (archivo, 'r');
 
 %Recibimos el número de filas y columnas que tiene la matriz para lectura
-num_filas = input ('Ingresa el número de patrones prototipo (filas) que tiene la matriz: ');
-num_col = input ('Ingresa el número de rasgos de cada patron (columas) que tiene la matriz: ');
+num_filas = input ('\nIngresa el número de patrones prototipo (filas) que tiene la matriz: ');
+num_col = input ('\nIngresa el número de rasgos de cada patron (columas) que tiene la matriz: ');
 
 %Creamos una matriz para el bias
 bias = zeros (num_filas,1);
@@ -21,9 +21,8 @@ while ~feof (archivo_matriz)
 end
 W = W';
 
-clc
 %Recibimos el nombre del archivo como un String (por eso la 's')
-archivo = input ('Introduce el nombre del archivo que contiene el vector de entrada: ', 's');
+archivo = input ('\nIntroduce el nombre del archivo que contiene el vector de entrada: ', 's');
 
 %Abrimos el archivo que contiene la matriz a usar en modo lectura
 archivo_matriz = fopen (archivo, 'r');
@@ -33,6 +32,8 @@ p = fscanf (archivo_matriz, '%f');
 
 %COMIENZA LA CAPA FEEDFORWARD (1 vez)
 a = purelin((W * p) + bias);
+
+clc
 
 %Calculamos un valor para epsilon aleatorio
 epsilon = (rand() * (1/(num_filas - 1)) * -1);
@@ -54,6 +55,10 @@ flag = ones (num_filas, 1);iteracion = 1;
 
 %ESCRIBIR LA MATRIZ EN UN ARCHIVO DE TEXTO LLAMADO SalidaHamming
 nuevo = fopen ('SalidaHamming.txt', 'w');
+
+for i = 1:num_filas
+      fprintf (nuevo, '%f\n', a(i, 1));
+end
 
 while flag ~= zeros (num_filas, 1)
     p = a;
@@ -80,7 +85,7 @@ for i = 1:num_filas
         break;
     end
 end
-fprintf ('La RNA convergió en la iteración %d a la clase numero %d\n', iteracion - 1, i);
+fprintf ('\nLa RNA convergió en la iteración %d a la clase numero %d\n\n', iteracion - 1, i);
 
 %GRAFICAMOS LOS VALORES DE SALIDA DE LA RED
 nuevo = fopen ('SalidaHamming.txt', 'r');
