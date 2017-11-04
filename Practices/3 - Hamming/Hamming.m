@@ -6,20 +6,14 @@ clear;
 archivo = input ('Introduce el nombre del archivo que contiene a W: ', 's');
 
 %Abrimos el archivo que contiene la matriz a usar en modo lectura
-archivo_matriz = fopen (archivo, 'r');
-
-%Recibimos el número de filas y columnas que tiene la matriz para lectura
-num_filas = input ('\nIngresa el número de patrones prototipo (filas) que tiene la matriz: ');
-num_col = input ('\nIngresa el número de rasgos de cada patron (columas) que tiene la matriz: ');
+W = dlmread (archivo);
+aux = size (W);
+num_filas = aux (1, 1);
+num_col = aux (1, 2);
 
 %Creamos una matriz para el bias
 bias = zeros (num_filas,1);
 bias = bias + num_col;
-
-while ~feof (archivo_matriz)
-    [W, ~] = fscanf (archivo_matriz, '%f', [num_col num_filas]);
-end
-W = W';
 
 %Recibimos el nombre del archivo como un String (por eso la 's')
 archivo = input ('\nIntroduce el nombre del archivo que contiene el vector de entrada: ', 's');
