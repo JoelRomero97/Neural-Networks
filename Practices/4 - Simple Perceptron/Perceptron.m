@@ -2,6 +2,9 @@
 clearvars
 clc
 
+%Para guardar valores finales de pesos y bias
+nombre_arch = strcat ('resultado_', datestr(now,'HH-MM-SS'), '_', datestr (now, 'mm-dd-yyyy'), '.txt');
+
 nombre_archivo = input ('Ingrese el nombre del archivo que contiene el conjunto de entrenamiento: ', 's');
 
 opcion = input ('\nIndique como quiere resolver el problema\n\n1. Método Gráfico\n2. Regla de Aprendizaje\n\n');
@@ -43,7 +46,6 @@ elseif opcion == 2
         bias = rand (S, 1);
         
         %Para escribir el error
-        nombre_arch = strcat ('resultado_', datestr(now,'HH-MM-SS'), '_', datestr (now, 'mm-dd-yyyy'), '.txt');
         nuevo = fopen ('Errores.txt', 'w');
         
         %Ciclo que controla las iteraciones
@@ -82,21 +84,32 @@ elseif opcion == 2
             if Eit < e_it && Eit > 0
                 fprintf ('\n\nSe obtuvo un aprendizaje exitoso en la iteración %d\n\n', i);
                 fprintf ('\n\nCriterio de finalización activado: Eit < %f\n\n', e_it);
-                %AQUI FALTA ESCRIBIR LOS VALORES DE PESOS Y BIAS EN EL
-                %ARCHIVO DE TEXTO
                 i = -1;
                 break;
             elseif Eit == 0
                 fprintf ('\n\nSe obtuvo un aprendizaje exitoso en la iteración %d\n\n', i);
                 fprintf ('\n\nCriterio de finalización activado: Todos los datos bien clasificados\n\n');
-                %AQUI FALTA ESCRIBIR LOS VALORES DE PESOS Y BIAS EN EL
-                %ARCHIVO DE TEXTO
                 i = -1;
                 break;
             end
         end
         if i >= it_max
             fprintf ('\n\nNo se obtuvo un aprendizaje exitoso de la red :(\n\n');
+        else
+            pesos_finales = fopen (nombre_arch, 'w');
+            fprintf (pesos_finales, 'Matriz de pesos\n\n');
+            bias = rand (S, 1);
+            for i = 1:S
+                for j = 1:R
+                    fprintf (pesos_finales, '%.4f\t', W (i, j));
+                end
+                fprintf (pesos_finales, '\n');
+            end
+            fprintf (pesos_finales, '\n\nBias\n\n');
+            for i = 1:S
+                fprintf (pesos_finales, '%.4f\n', bias (i, 1));
+            end
+            fclose (pesos_finales);
         end
     end
 else
