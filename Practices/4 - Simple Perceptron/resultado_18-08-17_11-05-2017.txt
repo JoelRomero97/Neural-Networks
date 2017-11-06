@@ -1,0 +1,8 @@
+Matriz de pesos
+
+0.9134	1.6324	
+
+
+Bias
+
+0.0975

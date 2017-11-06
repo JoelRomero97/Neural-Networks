@@ -21,14 +21,10 @@ elseif opcion == 2
         prototipos = zeros (num_prototipos, R);
         targets = zeros (num_prototipos, dim_target);
         for i = 1:num_prototipos
-            prototipos (i, 1) = fscanf (arch, '{[%f');
-            for j = 2:R
-                prototipos (i, j) = fscanf (arch, ' %f');
-            end
-            targets (i, 1) = fscanf (arch, '],[%f');
-            for j = 2:dim_target
-                targets (i, j) = fscanf (arch, ' %f');
-            end
+            fscanf (arch, '{[');
+            prototipos (i, :) = fscanf (arch, '%f');
+            fscanf (arch, '],[');
+            targets (i, :) = fscanf (arch, '%f');
             fscanf (arch, ']}\n');
         end
         fclose (arch);
