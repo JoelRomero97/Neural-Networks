@@ -13,7 +13,7 @@ W = rand (1, 3);
 W1 = zeros (1, 9);
 W2 = zeros (1, 9);
 W3 = zeros (1, 9);
-%W = [0.84 0.39 0.78];
+
 fprintf ('\n\nLos valores iniciales de la matriz de pesos son: ')
 disp (W);
 errores = 0;
