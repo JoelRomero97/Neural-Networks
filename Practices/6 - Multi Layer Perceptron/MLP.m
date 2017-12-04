@@ -3,11 +3,11 @@ clc
 
 %Pedir al usuario el archivo de entrada (input.txt)
 archivo = input ('Ingresa el archivo de entrada: ', 's');
-%p = importdata (archivo);
+p = importdata (archivo);
 
 %Pedir al usuario el archivo de valores deseados (target.txt)
 archivo = input ('Ingresa el archivo de los valores deseados: ', 's');
-%target = importdata (archivo);
+target = importdata (archivo);
 
 %Pedir al usuario el rango de la señal
 rango = input ('Ingresa el rango de la señal a aproximar: ', 's');
@@ -35,11 +35,18 @@ numval = input ('Ingresa el valor máximo de incrementos consecutivos en el error
 clc
 fprintf ('Elija la distribución de los datos.\n\n');
 opcion = input ('1. 80 - 10 - 10\n2. 70 - 15 - 15\n\n');
-%numero_datos = size (p);
-%numero_datos = numero_datos (1, 1);
-%valores = randperm (numero_datos);
-%[entrenamiento, valores] = datos_entrenamiento (opcion, valores, p, target);
-%[validacion, prueba] = datos_validacion_prueba (valores, p, target);
+numero_datos = size (p);
+numero_datos = numero_datos (1, 1);
+valores = randperm (numero_datos);
+[entrenamiento, valores] = datos_entrenamiento (opcion, valores, p, target);
+[validacion, prueba] = datos_validacion_prueba (valores, p, target);
+
+fprintf ('Los datos de entrenamiento son\n');
+disp (entrenamiento);
+fprintf ('\nLos datos de validacion son\n');
+disp (validacion);
+fprintf ('\nLos datos de prueba son\n');
+disp (prueba);
 
 %Espacio en un rango definido por el usuario con 100 puntos
 t = linspace (rango (1, 1), rango (1, 2), 100);
