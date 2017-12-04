@@ -91,7 +91,7 @@ for iteracion = 1:itmax
             
             %Propagacion hacia adelante del dato
             for i = 1:num_capas
-                a {i + 1} = funcion (W {i}, a {k}, b {k}, funciones_activacion (1, k));
+                a {i + 1} = funcion (W {i, 1}, a {i, 1}, b {i, 1}, funciones_activacion (1, i));
             end
             
             %Se calcula el error de validacion para el dato i
@@ -118,8 +118,54 @@ for iteracion = 1:itmax
             incrementos_consecutivos = 0;
         end
     else
-        
+        for dato = 1:numero_datos_entrenamiento
+            %Dato a propagar hacia adelante
+            a {1} = entrenamiento (dato, 1);
+            
+            %Propagacion hacia adelante del dato
+            for i = 1:num_capas
+                a {i + 1} = funcion (W {i, 1}, a {i, 1}, b {i, 1}, funciones_activacion (1, i));
+            end
+            
+            %Se calcula el error de validacion para el dato i
+            error_dato = (entrenamiento (dato, 2) - a {num_capas + 1, 1});
+            %Se suma el error de validacion de cada dato
+            error_aprendizaje = (error_aprendizaje + error_dato);
+            error_aprendizaje = (error_aprendizaje / numero_datos_entrenamiento);
+            
+            %Calculo de sensitividades
+            F_m {num_capas} = matriz_F (funciones_activacion (1, num_capas), arquitectura (1, num_capas + 1), a {num_capas + 1, 1});
+            S {num_capas} = (-2 * F_m {num_capas} * error_dato);
+            
+            %Algoritmo Back Propagation
+            for i = (num_capas - 1):-1:1
+                F_m {i} = matriz_F (funciones_activacion (1, i), arquitectura (1, i + 1), a {i + 1, 1});
+                S {i} = F_m {i, 1} * (W {i+1, 1})' * S {i + 1, 1};
+            end
+            
+            %Actualizacion de pesos y bias
+            for i = num_capas:-1:1
+                W {i, 1} = (W {i, 1} - (alpha * S {i, 1} * (a {i, 1})'));
+                b {i, 1} = (b {i, 1} - (alpha * S {i, 1}));
+            end
+        end
     end
+    
+    %Condiciones de finalización por iteración
+    if error_aprendizaje < Eit && error_aprendizaje > 0
+        fprintf ('Se obtuvo un aprendizaje exitoso en la iteracion: %d', iteracion);
+        break;
+    end
+end
+
+%Propagación con pesos y bias finales
+salida = ones (1, numero_datos);
+for dato = 1:numero_datos
+    a {1, 1} = p (dato, 1);
+    for i = 1:num_capas
+        a {i + 1} = funcion (W {i, 1}, a {i, 1}, b {i, 1}, funciones_activacion (1, i));
+    end
+    salida (1, dato) = a {num_capas + 1};
 end
 
 %Espacio en un rango definido por el usuario con 100 puntos
