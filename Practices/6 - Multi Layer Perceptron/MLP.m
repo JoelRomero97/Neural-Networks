@@ -39,8 +39,7 @@ opcion = input ('1. 80 - 10 - 10\n2. 70 - 15 - 15\n\n');
 %numero_datos = numero_datos (1, 1);
 %valores = randperm (numero_datos);
 %[entrenamiento, valores] = datos_entrenamiento (opcion, valores, p, target);
-%[validacion, valores] = datos_validacion (opcion, valores, p, target);
-%prueba = datos_prueba (opcion, valores, p, target);
+%[validacion, prueba] = datos_validacion_prueba (valores, p, target);
 
 %Espacio en un rango definido por el usuario con 100 puntos
 t = linspace (rango (1, 1), rango (1, 2), 100);

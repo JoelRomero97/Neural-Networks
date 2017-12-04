@@ -18,5 +18,5 @@ function [entrenamiento, nuevos_val] = datos_entrenamiento (opcion, valores, p, 
         entrenamiento (i, 2) = target (valores (1, i), 1);
     end
     %Omitimos los datos ya ingresados para evitar repeticiones
-    nuevos_val = valores (i + 1, total_datos);
+    nuevos_val = valores (i + 1:total_datos);
 end
