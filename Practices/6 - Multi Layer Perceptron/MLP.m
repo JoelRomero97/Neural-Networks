@@ -4,11 +4,11 @@ clear
 
 %Pedir al usuario el archivo de entrada (input.txt)
 archivo = input ('Ingresa el archivo de entrada: ', 's');
-%p = importdata (archivo);
+p = importdata (archivo);
 
 %Pedir al usuario el archivo de valores deseados (target.txt)
 archivo = input ('Ingresa el archivo de los valores deseados: ', 's');
-%target = importdata (archivo);
+target = importdata (archivo);
 
 %Pedir al usuario el rango de la señal
 rango = input ('Ingresa el rango de la señal a aproximar: ', 's');
@@ -37,18 +37,19 @@ numval = input ('Ingresa el valor máximo de incrementos consecutivos en el error
 clc
 fprintf ('Elija la distribución de los datos.\n\n');
 opcion = input ('1. 80 - 10 - 10\n2. 70 - 15 - 15\n\n');
-%numero_datos = size (p);
-%numero_datos = numero_datos (1, 1);
-%valores = randperm (numero_datos);
-%[entrenamiento, valores] = datos_entrenamiento (opcion, valores, p, target);
-%[validacion, prueba] = datos_validacion_prueba (valores, p, target);
+numero_datos = size (p);
+numero_datos = numero_datos (1, 1);
+valores = randperm (numero_datos);
+[entrenamiento, valores] = datos_entrenamiento (opcion, valores, p, target);
+[validacion, prueba] = datos_validacion_prueba (valores, p, target);
+
 %Obtenemos el numero de elementos de cada subconjunto
-%numero_datos_entrenamiento = size (entrenamiento);
-%numero_datos_entrenamiento = numero_datos_entrenamiento (1, 1);
-%numero_datos_validacion = size (validacion);
-%numero_datos_validacion = numero_datos_validacion (1, 1);
-%numero_datos_prueba = size (prueba);
-%numero_datos_prueba = numero_datos_prueba (1, 1);
+numero_datos_entrenamiento = size (entrenamiento);
+numero_datos_entrenamiento = numero_datos_entrenamiento (1, 1);
+numero_datos_validacion = size (validacion);
+numero_datos_validacion = numero_datos_validacion (1, 1);
+numero_datos_prueba = size (prueba);
+numero_datos_prueba = numero_datos_prueba (1, 1);
 
 %Tamaño del vector de entrada p
 R = arquitectura (1, 1);
@@ -104,13 +105,13 @@ for iteracion = 1:itmax
         %Si ya hubo un incremento en el error de validacion
         if (error_validacion_actual > error_validacion_anterior)
             incrementos_consecutivos = incrementos_consecutivos + 1;
-            if incrementos_consecutivos < num_val
+            if incrementos_consecutivos < numval
                 %Actualizacion del error anterior
                 error_validacion_anterior = error_validacion_actual;
                 error_validacion_actual = 0;
             else
                 fprintf ('No se obtuvo un aprendizaje correcto de la red\n');
-                fprintf ('\nEarly Stopping en la iteración %d', iteracion);
+                fprintf ('\nEarly Stopping en la iteración %d\n', iteracion);
                 break;
             end
         else
@@ -153,7 +154,7 @@ for iteracion = 1:itmax
     
     %Condiciones de finalización por iteración
     if error_aprendizaje < Eit && error_aprendizaje > 0
-        fprintf ('Se obtuvo un aprendizaje exitoso en la iteracion: %d', iteracion);
+        fprintf ('Se obtuvo un aprendizaje exitoso en la iteracion: %d\n', iteracion);
         break;
     end
 end
@@ -172,18 +173,14 @@ end
 t = linspace (rango (1, 1), rango (1, 2), 100);
 j = 1;
 i = 1;
+    
+%Graficamos la señal original y la obtenida con el MLP
+seno = (1 + sin ((8 * pi * t) / 4));
+hold on;
+plot (t, seno, 'b-');
+plot (t, salida, 'r-');
+hold off;
 
-while i <= 8
-    %
-    
-    %Graficamos la señal original y la obtenida con el MLP
-    seno = (1 + sin ((i * pi * t) / 4));
-    hold on;
-    subplot (2, 2, j), plot (t, seno, 'b-');
-    %subplot (2, 2, j), plot (t, aproximada, 'r-');
-    hold off;
-    
-    %Actualizacion de contadores
-    i = (i * 2);
-    j = (j + 1);
-end
+
+
+
